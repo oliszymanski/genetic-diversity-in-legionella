@@ -63,21 +63,33 @@ def align_multiple_seq( genomes_dir : str, format: str ):
     """
 
     seq_records = []
-
+    temp_file = 'sequences.fna'
+    
     for filename in os.listdir( genomes_dir ):
         if ( filename.endswith( '.fna' ) or filename.endswith( '.fasta' ) ):    # by default .fna and .fasta (change in the future)
             single_file_path = os.path.join( genomes_dir, filename )            # generates path to a single file
 
             for record in SeqIO.parse( single_file_path, format ):
-                seq_records.append( Seq( str(record) ) )
+                seq_records.append( record )
 
 
-    alignment = MultipleSeqAlignment( seq_records )
 
-    # MUSCLE used for multiple alignemnts to be made
-    
+    muscle_exec = 'muscle5'
+    to_align = 'sequences.fna'
+    aligned_file = 'aligned_sequences.fna'
+
+    SeqIO.write( seq_records, aligned_file, 'fasta' )
+
+    # cline = MuscleCommandline( muscle_exec, align=to_align, output=aligned_file )
+    # cline()
+
+    # aligned = AlignIO.read( aligned_file, 'fasta' )
+
+
+
 
     return seq_records
+
 
 
 
@@ -87,6 +99,5 @@ def alignment_length( file_path: str, format : str ):
     alignment_length = alignment.get_alignment_length()
 
     print( 'Alignment length =', alignment_length )
-
 
     return alignment_length

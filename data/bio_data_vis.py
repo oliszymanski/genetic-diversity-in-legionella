@@ -78,7 +78,7 @@ def align_multiple_seq( genomes_dir : str, format: str ):
     to_align = 'sequences.fna'
     aligned_file = 'aligned_sequences.fna'
 
-    SeqIO.write( seq_records, aligned_file, 'fasta' )
+    SeqIO.write( seq_records, 'sequences.fna', 'fasta' )
 
     # cline = MuscleCommandline( muscle_exec, align=to_align, output=aligned_file )
     # cline()

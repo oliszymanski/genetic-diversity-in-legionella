@@ -10,7 +10,8 @@ from Bio import SeqIO, AlignIO, pairwise2
 from Bio.pairwise2 import format_alignment
 from Bio.Align import MultipleSeqAlignment
 from Bio.Seq import Seq
-from Bio.Align.Applications import MuscleCommandline
+# from Bio.Align.Applications import MuscleCommandline
+from Bio.Align.Applications import ClustalwCommandline
 
 # for debugging and testing
 _DBG0_ = True
@@ -80,6 +81,9 @@ def align_multiple_seq( genomes_dir : str, format: str ):
 
     SeqIO.write( seq_records, to_align, 'fasta' )
 
+    clustalw_cline = ClustalwCommandline( 'C:/ClustalW2/clustalw2.exe', infile=to_align )
+    clustalw_cline()
+
     # muscle_cline = MuscleCommandline( input=to_align, out=aligned_file )
 
     # muscle_cline.gapopen = 50
@@ -89,9 +93,6 @@ def align_multiple_seq( genomes_dir : str, format: str ):
     # muscle_cline()
 
     # aligned = AlignIO.read( aligned_file, 'fasta' )
-
-
-
 
     return seq_records
 

@@ -6,4 +6,4 @@ if (__name__ == '__main__'):
     aligned_seq_records = bio_data_vis.align_multiple_seq( './data/genomes/', format='fasta' )
 
     
-    #print( seq[0] ) # sequence of the first file .fna file
+    # print( seq[0] ) # sequence of the first file .fna file

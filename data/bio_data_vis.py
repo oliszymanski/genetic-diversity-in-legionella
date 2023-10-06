@@ -114,6 +114,30 @@ def align_multiple_seq_from_file( file_name : str, file_type='fasta' ):
 
 
 
+def retrive_first_nucleotides( file_path, n_nucleotides : int, file_type='fasta' ):
+    
+    seq_dict = {}
+
+    for record in SeqIO.parse( file_path, file_type ):
+        record_id = record.id
+        seq = record.seq[ :n_nucleotides ]
+        seq_dict[ record_id ] = seq
+
+    return seq_dict
+
+
+
+def write_fasta_file( in_dict : dict, output_file : str ):
+
+    edit_file = open( output_file, 'w' )
+
+    for record_id, seq in in_dict.items():
+        edit_file.write( f'>{ record_id }\n{ seq }\n' )
+
+    return None
+
+
+
 def alignment_length( file_path: str, format : str ):
 
     alignment = AlignIO.read( file_path , format )
@@ -122,5 +146,3 @@ def alignment_length( file_path: str, format : str ):
     print( 'Alignment length =', alignment_length )
 
     return alignment_length
-
-

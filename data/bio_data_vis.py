@@ -22,21 +22,19 @@ _DBG0_ = False
 
 def write_sequences_to_align( sequences_file_path : str, wanted_ids, file_type='fasta' ):
 
-    wanted_seqs = []
+    wanted_records = []
 
-    for record in SeqIO.parse( sequences_file_path, file_type ):
-        if ( record.id in wanted_ids ):
-            
+    records = SeqIO.to_dict( SeqIO.parse( sequences_file_path, file_type ) )
 
-        print( f"record id:\n{record.id}" )
-    
-    # for record in list( SeqIO.parse( sequences_file_path, file_type ) ):
-    
-    
-    print( f'wanted seq ids: { wanted_seqs }' )
-    print( f'wanted seqs: { wanted_seqs }' )
+    for record_id in wanted_ids:
+        if ( record_id in records ):
+            wanted_records.append( records[record_id] )
 
-    # SeqIO.write( wanted_seqs, 'retrived_seqs.fna', file_type )
+    SeqIO.write( wanted_records, 'retrived_seqs.fna', file_type )
+
+
+    print( f"wanted seqs:\n{ wanted_records }" )
+
 
     return None
 

@@ -16,7 +16,7 @@ if ( __name__ == '__main__' ):
     
     # aligned_sequences = bio_data_vis.align_multiple_seq_from_file( './retrived_seqs.fna' )
 
-    retrived_nucleotides = bio_data_vis.retrive_first_nucleotides( file_path=r'./retrived_seqs.fna', n_nucleotides=12000 )
+    retrived_nucleotides = bio_data_vis.retrive_first_nucleotides( file_path=r'./retrived_seqs.fna', n_nucleotides=60000 )
     bio_data_vis.write_fasta_file( retrived_nucleotides, r'to_align.fna' )
 
     aligned_sequences = bio_data_vis.align_multiple_seq_from_file( r'./to_align.fna' )

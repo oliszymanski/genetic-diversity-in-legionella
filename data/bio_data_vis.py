@@ -6,13 +6,14 @@ import os
 
 # import matplotlib.pyplot as plt
 
-from Bio import SeqIO, AlignIO, pairwise2
+from Bio import SeqIO, AlignIO, pairwise2, Phylo
 from Bio.pairwise2 import format_alignment
 from Bio.Align import MultipleSeqAlignment
 from Bio.Align.Applications import ClustalwCommandline
+from Bio.Phylo.TreeConstruction import DistanceCalculator, DistanceTreeConstructor
 
 # for debugging and testing
-_DBG0_ = False
+_DBG0_ = True
 
 
 
@@ -146,3 +147,45 @@ def alignment_length( file_path: str, format : str ):
     print( 'Alignment length =', alignment_length )
 
     return alignment_length
+
+
+
+class Analysis():
+    def __init__( self, aligned_sequences_file : str, file_type ):
+        
+        self.aligned_sequences_file = aligned_sequences_file
+        self.file_type = file_type
+        self.alignments = AlignIO.read( self.aligned_sequences_file, file_type )
+
+        return None
+    
+
+
+    def generate_phylo_tree(self, output_file_name : str, output_file_type : str):
+        calc = DistanceCalculator( 'identity' )
+        distance = calc.get_distance( self.alignments )
+
+        constructor = DistanceTreeConstructor( calc, method='nj' )
+        tree = constructor.build_tree( distance )
+
+        Phylo.write( tree, output_file_name, output_file_type )
+
+
+        return None
+    
+
+    def id_indels( self ):
+
+        # indel_positions = []
+        # indel_lengths = []
+
+        indel_data = {}
+
+        for i in range( len( self.alignments[0] ) ):
+            col = self.alignments[ :, i ]
+            gap_count = col.count( '-' )
+
+            if ( gap_count > 0 ):
+                indel_data[i] = gap_count
+
+        return indel_data

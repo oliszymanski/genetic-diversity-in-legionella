@@ -4,17 +4,15 @@
 
 import os
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from Bio import SeqIO, AlignIO, pairwise2
 from Bio.pairwise2 import format_alignment
 from Bio.Align import MultipleSeqAlignment
-from Bio.Seq import Seq
-# from Bio.Align.Applications import MuscleCommandline
 from Bio.Align.Applications import ClustalwCommandline
 
 # for debugging and testing
-_DBG0_ = True
+_DBG0_ = False
 
 
 
@@ -22,14 +20,29 @@ _DBG0_ = True
 #   FUNCTIONS
 #========================================================
 
-def say_hi():
-    print('hello there')
+def write_sequences_to_align( sequences_file_path : str, wanted_ids, file_type='fasta' ):
 
-    return
+    wanted_seqs = []
+
+    for record in SeqIO.parse( sequences_file_path, file_type ):
+        if ( record.id in wanted_ids ):
+            
+
+        print( f"record id:\n{record.id}" )
+    
+    # for record in list( SeqIO.parse( sequences_file_path, file_type ) ):
+    
+    
+    print( f'wanted seq ids: { wanted_seqs }' )
+    print( f'wanted seqs: { wanted_seqs }' )
+
+    # SeqIO.write( wanted_seqs, 'retrived_seqs.fna', file_type )
+
+    return None
 
 
 
-def align_two_seq( type : str, alignment_00, alignment_01 ):
+def align_two_seq( type : str, seq_00, seq_01 ):
     """
     :param type: define type of alignment'
     :param alignment_00: first sequence to align'
@@ -38,7 +51,7 @@ def align_two_seq( type : str, alignment_00, alignment_01 ):
     """
 
     if ( type == 'global' ):
-        alignments = pairwise2.align.globalxx( alignment_00, alignment_01 )
+        alignments = pairwise2.align.globalxx( seq_00, seq_01 )
         formatted_alignment = format_alignment( *alignments[0] )
 
         if (_DBG0_): print( formatted_alignment )
@@ -47,7 +60,7 @@ def align_two_seq( type : str, alignment_00, alignment_01 ):
 
 
     elif ( type == 'local' ):
-        alignments = pairwise2.align.localxx( alignment_00, alignment_01 )
+        alignments = pairwise2.align.localxx( seq_00, seq_01 )
         formatted_alignment = format_alignment( *alignments[0] )
 
         if (_DBG0_): print( formatted_alignment )
@@ -83,9 +96,12 @@ def align_multiple_seq( genomes_dir : str, format: str ):
     clustalw_cline = ClustalwCommandline( 'C:/ClustalW2/clustalw2.exe', infile=to_align, outfile=aligned_file )
     clustalw_cline()
 
-    # aligned = AlignIO.read( aligned_file, 'fasta' )
+    aligned = AlignIO.read( aligned_file, 'fasta' )
+    aligned = MultipleSeqAlignment( aligned )
 
-    return seq_records
+    return aligned
+
+
 
 
 
@@ -98,3 +114,5 @@ def alignment_length( file_path: str, format : str ):
     print( 'Alignment length =', alignment_length )
 
     return alignment_length
+
+

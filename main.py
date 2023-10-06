@@ -14,7 +14,7 @@ if ( __name__ == '__main__' ):
         'NZ_LT906442.1'         # Legionella waltersii
     ]
     
-    bio_data_vis.write_sequences_to_align( main_file_path, wanted_ids )
-    
+    # bio_data_vis.write_sequences_to_align( main_file_path, wanted_ids )
+    aligned_sequences = bio_data_vis.align_multiple_seq_from_file( './retrived_seqs.fna' )
 
     # bio_data_vis.align_two_seq( 'global', ls_record_penumophila[0], ls_record_antarctica[0] )

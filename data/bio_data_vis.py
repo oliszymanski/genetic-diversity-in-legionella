@@ -67,7 +67,7 @@ def align_two_seq( type : str, seq_00, seq_01 ):
 
 
 
-def align_multiple_seq( genomes_dir : str, format: str ):
+def align_multiple_seq_from_dir( genomes_dir : str, format: str ):
     """
     :param genomes_dir: directory containing all genomes to analyse,
     :param format: file format (set by default: fasta file),
@@ -101,6 +101,16 @@ def align_multiple_seq( genomes_dir : str, format: str ):
 
 
 
+def align_multiple_seq_from_file( file_name : str, file_type='fasta' ):
+
+    aligned_file = 'aligned_sequences.fna'
+    clustalw_cline = ClustalwCommandline( 'C:/ClustalW2/clustalw2.exe', infile=file_name, outfile=aligned_file )
+    clustalw_cline()
+
+    aligned = AlignIO.read( aligned_file, file_type )
+    aligned_seq = MultipleSeqAlignment( aligned )
+
+    return aligned_seq
 
 
 

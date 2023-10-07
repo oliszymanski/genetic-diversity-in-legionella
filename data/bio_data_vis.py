@@ -4,7 +4,7 @@
 
 import os
 
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from Bio import SeqIO, AlignIO, pairwise2, Phylo
 from Bio.pairwise2 import format_alignment
@@ -161,18 +161,17 @@ class Analysis():
     
 
 
-    def generate_phylo_tree(self, output_file_name : str, output_file_type : str):
-        calc = DistanceCalculator( 'identity' )
-        distance = calc.get_distance( self.alignments )
+    def generate_phylo_tree(self, read_dnd_file : str, file_type='newick'):
+        tree = Phylo.read( read_dnd_file, file_type )
 
-        constructor = DistanceTreeConstructor( calc, method='nj' )
-        tree = constructor.build_tree( distance )
-
-        Phylo.write( tree, output_file_name, output_file_type )
+        fig, ax = plt.subplots( figsize=(10, 10) )
+        Phylo.draw( tree, axes=ax, do_show=False )
+        plt.show()
 
 
         return None
     
+
 
     def id_indels( self ):
 

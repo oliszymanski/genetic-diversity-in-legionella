@@ -1,6 +1,6 @@
 import data.bio_data_vis as bio_data_vis
 
-from Bio import SeqIO
+from Bio import SeqIO, Phylo
 
 if ( __name__ == '__main__' ):
     main_file_path = r'./sequences.fna'
@@ -13,10 +13,13 @@ if ( __name__ == '__main__' ):
         'NZ_LNYW01000001.1',    # Legionella shakespearei
         'NZ_LT906442.1'         # Legionella waltersii
     ]
-    
-    # aligned_sequences = bio_data_vis.align_multiple_seq_from_file( './retrived_seqs.fna' )
 
-    retrived_nucleotides = bio_data_vis.retrive_first_nucleotides( file_path=r'./retrived_seqs.fna', n_nucleotides=60000 )
-    bio_data_vis.write_fasta_file( retrived_nucleotides, r'to_align.fna' )
+    # retrived_nucleotides = bio_data_vis.retrive_first_nucleotides( file_path=r'./retrived_seqs.fna', n_nucleotides=60000 )
+    # bio_data_vis.write_fasta_file( retrived_nucleotides, r'to_align.fna' )
 
-    aligned_sequences = bio_data_vis.align_multiple_seq_from_file( r'./to_align.fna' )
+    # aligned_sequences = bio_data_vis.align_multiple_seq_from_file( r'./to_align.fna' )
+
+    main_analysis = bio_data_vis.Analysis( r'./aligned_sequences.fna', 'clustal' )
+    id_indels = main_analysis.id_indels()
+    main_analysis.generate_phylo_tree( 'to_align.dnd', 'newick' )
+

@@ -10,7 +10,6 @@ from Bio import SeqIO, AlignIO, pairwise2, Phylo
 from Bio.pairwise2 import format_alignment
 from Bio.Align import MultipleSeqAlignment
 from Bio.Align.Applications import ClustalwCommandline
-from Bio.Phylo.TreeConstruction import DistanceCalculator, DistanceTreeConstructor
 
 # for debugging and testing
 _DBG0_ = True
@@ -154,7 +153,6 @@ class Analysis():
     def __init__( self, aligned_sequences_file : str, file_type ):
         
         self.aligned_sequences_file = aligned_sequences_file
-        self.file_type = file_type
         self.alignments = AlignIO.read( self.aligned_sequences_file, file_type )
 
         return None
@@ -184,7 +182,24 @@ class Analysis():
             col = self.alignments[ :, i ]
             gap_count = col.count( '-' )
 
+            if (_DBG0_): print( f'column: {i}: {col}, gap count: {gap_count}' )
+
             if ( gap_count > 0 ):
                 indel_data[i] = gap_count
 
         return indel_data
+    
+
+
+    def calc_nucleotide_diversity( self ) -> int:
+
+        seq_length = len( self.alignments[0].seq )
+        nucleotide_freq = [0] * seq_length
+
+        for record in self.alignments:
+            for i, nucleotide in enumerate( record.seq ):
+                if ( nucleotide != '-' ): nucleotide_freq[i] += 1
+
+        pi = 1 - sum( ( freq / len( self.alignments ) ) ** 2 for freq in nucleotide_freq )
+
+        return pi

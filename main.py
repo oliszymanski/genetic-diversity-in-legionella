@@ -1,6 +1,10 @@
 import data.bio_data_vis as bio_data_vis
 
-from Bio import SeqIO, Phylo
+import matplotlib.pyplot as plt
+
+import pandas as pd
+
+import seaborn as sns
 
 if ( __name__ == '__main__' ):
     main_file_path = r'./sequences.fna'
@@ -21,5 +25,10 @@ if ( __name__ == '__main__' ):
 
     main_analysis = bio_data_vis.Analysis( r'./aligned_sequences.fna', 'clustal' )
     id_indels = main_analysis.id_indels()
-    main_analysis.generate_phylo_tree( 'to_align.dnd', 'newick' )
+    
+    # indel_df = pd.DataFrame.from_dict( id_indels, orient='index', columns=['Gap count'] )
+    
+    # main_analysis.generate_phylo_tree( 'to_align.dnd', 'newick' )
 
+    # nucleotide_diversity = main_analysis.calc_nucleotide_diversity()
+    # print( f'nucleotide_diversity: { nucleotide_diversity }' )

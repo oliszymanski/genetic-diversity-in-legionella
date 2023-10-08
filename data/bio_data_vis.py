@@ -21,6 +21,10 @@ _DBG0_ = True
 #========================================================
 
 def write_sequences_to_align( sequences_file_path : str, wanted_ids, file_type='fasta' ):
+    """
+    :param sequences_file_path: path of file with sequences,
+    :param wanted_ids: list of ids of sequence records;
+    """
 
     wanted_records = []
 
@@ -102,6 +106,10 @@ def align_multiple_seq_from_dir( genomes_dir : str, format: str ):
 
 
 def align_multiple_seq_from_file( file_name : str, file_type='fasta' ):
+    """
+    :param file_name: name of file with sequences for MSA,
+    :param file_type: type of file;
+    """
 
     aligned_file = 'aligned_sequences.fna'
     clustalw_cline = ClustalwCommandline( 'C:/ClustalW2/clustalw2.exe', infile=file_name, outfile=aligned_file )
@@ -115,7 +123,11 @@ def align_multiple_seq_from_file( file_name : str, file_type='fasta' ):
 
 
 def retrive_first_nucleotides( file_path, n_nucleotides : int, file_type='fasta' ):
-    
+    """
+    :param file_path: path of file (or file name in same dir),
+    :param n_nucleotides: number of first n nucleotides;
+    """
+
     seq_dict = {}
 
     for record in SeqIO.parse( file_path, file_type ):
@@ -128,6 +140,10 @@ def retrive_first_nucleotides( file_path, n_nucleotides : int, file_type='fasta'
 
 
 def write_fasta_file( in_dict : dict, output_file : str ):
+    """
+    :param in_dict: input dictonary with fasta data,
+    :param output_file: output file after operations;
+    """
 
     edit_file = open( output_file, 'w' )
 
@@ -139,6 +155,10 @@ def write_fasta_file( in_dict : dict, output_file : str ):
 
 
 def alignment_length( file_path: str, format : str ):
+    """
+    :param file_path: path of file (or file name in same dir),
+    :param format: format of file;
+    """
 
     alignment = AlignIO.read( file_path , format )
     alignment_length = alignment.get_alignment_length()
@@ -149,9 +169,19 @@ def alignment_length( file_path: str, format : str ):
 
 
 
+def fasta_msa( file_path : str, file='type' ):
+    return None
+
+
+
+
 class Analysis():
     def __init__( self, aligned_sequences_file : str, file_type ):
-        
+        """
+        :param aligned_sequences_file: file with aligned sequences,
+        :param file_type: type of input file;
+        """
+
         self.aligned_sequences_file = aligned_sequences_file
         self.alignments = AlignIO.read( self.aligned_sequences_file, file_type )
 
@@ -160,6 +190,10 @@ class Analysis():
 
 
     def generate_phylo_tree(self, read_dnd_file : str, file_type='newick'):
+        """
+        :param read_dnd_file: dnd file from MSA file;
+        """
+
         tree = Phylo.read( read_dnd_file, file_type )
 
         fig, ax = plt.subplots( figsize=(10, 10) )
@@ -172,9 +206,6 @@ class Analysis():
 
 
     def id_indels( self ):
-
-        # indel_positions = []
-        # indel_lengths = []
 
         indel_data = {}
 

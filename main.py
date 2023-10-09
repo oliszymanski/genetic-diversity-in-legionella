@@ -18,13 +18,20 @@ if ( __name__ == '__main__' ):
         'NZ_LT906442.1'         # Legionella waltersii
     ]
 
-    # retrived_nucleotides = bio_data_vis.retrive_first_nucleotides( file_path=r'./retrived_seqs.fna', n_nucleotides=60000 )
+    retrived_nucleotides = bio_data_vis.retrive_first_nucleotides( file_path=r'./retrived_seqs.fna', n_nucleotides=60000 )
+    
+    if ( bio_data_vis._DBG1_ ):
+        for k,v in retrived_nucleotides.items():
+            print( v[1412]  )
+    
     # bio_data_vis.write_fasta_file( retrived_nucleotides, r'to_align.fna' )
 
     # aligned_sequences = bio_data_vis.align_multiple_seq_from_file( r'./to_align.fna' )
 
     main_analysis = bio_data_vis.Analysis( r'./aligned_sequences.fna', 'clustal' )
     id_indels = main_analysis.id_indels()
+
+    bio_data_vis.fasta_msa( retrived_nucleotides, 13556 )
     
     # indel_df = pd.DataFrame.from_dict( id_indels, orient='index', columns=['Gap count'] )
     

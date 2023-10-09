@@ -3,6 +3,7 @@
 #========================================================
 
 import os
+from collections import defaultdict
 
 import matplotlib.pyplot as plt
 
@@ -13,6 +14,7 @@ from Bio.Align.Applications import ClustalwCommandline
 
 # for debugging and testing
 _DBG0_ = True
+_DBG1_ = False
 
 
 
@@ -169,9 +171,35 @@ def alignment_length( file_path: str, format : str ):
 
 
 
-def fasta_msa( file_path : str, file='type' ):
-    return None
+def sort_set( unsorted_set : set ):
+    return sorted( unsorted_set )
 
+
+
+def fasta_msa( in_dict : dict, n_nucleotides : int  ):
+    """
+    :param in_dict: dictionary with data,
+    :param n_nucleotides: first n nucleotides for MSA;
+    """
+
+    positions_set = set()
+    aligned_indexes = defaultdict( set )
+
+    for i in range( n_nucleotides ):
+
+        index_val = [ in_dict[key][i] for key in in_dict ]
+
+        if ( all( val == index_val[0] for val in index_val ) ):
+            aligned_indexes[ index_val[-1] ].add( i )
+            
+
+    for k, val_set in aligned_indexes.items():
+        aligned_indexes[ k ] = sort_set( val_set )
+
+    if (_DBG0_):
+        print( f"aligned_indexes:\n{aligned_indexes}" )
+
+    return
 
 
 
@@ -213,7 +241,7 @@ class Analysis():
             col = self.alignments[ :, i ]
             gap_count = col.count( '-' )
 
-            if (_DBG0_): print( f'column: {i}: {col}, gap count: {gap_count}' )
+            # if (_DBG0_): print( f'column: {i}: {col}, gap count: {gap_count}' )
 
             if ( gap_count > 0 ):
                 indel_data[i] = gap_count
@@ -234,3 +262,18 @@ class Analysis():
         pi = 1 - sum( ( freq / len( self.alignments ) ) ** 2 for freq in nucleotide_freq )
 
         return pi
+    
+
+
+class Testing():
+    def __init__(self):
+        return
+    
+
+    def test_alignments( self, source_dict : dict, alignments_dict : dict ):
+
+        # for nucleo, index in alignments_dict.items():
+
+
+
+        return None

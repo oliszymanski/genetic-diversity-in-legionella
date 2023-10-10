@@ -1,10 +1,14 @@
+#========================================================
+#   IMPORTS
+#========================================================
+
 import data.bio_data_vis as bio_data_vis
 
-import matplotlib.pyplot as plt
 
-import pandas as pd
 
-import seaborn as sns
+#========================================================
+#   MAIN
+#========================================================
 
 if ( __name__ == '__main__' ):
     main_file_path = r'./sequences.fna'
@@ -28,10 +32,18 @@ if ( __name__ == '__main__' ):
 
     # aligned_sequences = bio_data_vis.align_multiple_seq_from_file( r'./to_align.fna' )
 
+    # objects
     main_analysis = bio_data_vis.Analysis( r'./aligned_sequences.fna', 'clustal' )
+    main_tests = bio_data_vis.Testing()
+
+    bio_test_data = bio_data_vis.fasta_msa( retrived_nucleotides, 13556 )
+    
+    main_tests.test_alignments( retrived_nucleotides, bio_test_data )
+    
     id_indels = main_analysis.id_indels()
 
-    bio_data_vis.fasta_msa( retrived_nucleotides, 13556 )
+    
+
     
     # indel_df = pd.DataFrame.from_dict( id_indels, orient='index', columns=['Gap count'] )
     

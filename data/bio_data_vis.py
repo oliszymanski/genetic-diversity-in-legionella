@@ -199,7 +199,7 @@ def fasta_msa( in_dict : dict, n_nucleotides : int  ):
     if (_DBG0_):
         print( f"aligned_indexes:\n{aligned_indexes}" )
 
-    return
+    return aligned_indexes
 
 
 
@@ -267,13 +267,22 @@ class Analysis():
 
 class Testing():
     def __init__(self):
+        self.test_comment_status = 'Test status: '
+        self.test_comment_passed = True
+        self.test_comment_failed = False
+        
         return
     
 
-    def test_alignments( self, source_dict : dict, alignments_dict : dict ):
+    def test_alignments( self, alignment_src : dict, alignments_dict : dict ):        # source_dict : dict
 
-        # for nucleo, index in alignments_dict.items():
+        for set_vals in alignments_dict.values():
+            
+            if ( _DBG0_ ): print( f'set: { set_vals }' )
 
+            for i in set_vals:
+                test_aligned_seq = [ alignment_src[ k ][ str(i) ] for k in alignment_src.items() ]
 
+        print( f' test_aligned_seq: {test_aligned_seq} ' )
 
         return None

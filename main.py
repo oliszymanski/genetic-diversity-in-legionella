@@ -24,9 +24,11 @@ if ( __name__ == '__main__' ):
 
     retrived_nucleotides = bio_data_vis.retrive_first_nucleotides( file_path=r'./retrived_seqs.fna', n_nucleotides=60000 )
     
-    if ( bio_data_vis._DBG1_ ):
+    ls_retrived_data = []
+
+    if ( bio_data_vis._DBG0_ ):
         for k,v in retrived_nucleotides.items():
-            print( v[1412]  )
+            ls_retrived_data.append( v )
     
     # bio_data_vis.write_fasta_file( retrived_nucleotides, r'to_align.fna' )
 
@@ -38,11 +40,16 @@ if ( __name__ == '__main__' ):
 
     bio_test_data = bio_data_vis.fasta_msa( retrived_nucleotides, 13556 )
     
-    main_tests.test_alignments( retrived_nucleotides, bio_test_data )
+    # main_tests.test_alignments( retrived_nucleotides, bio_test_data )
     
     id_indels = main_analysis.id_indels()
 
-    
+    # main_analysis.id_snps( r'./retrived_seqs.fna', wanted_ids )
+
+    aligned_seqs = bio_data_vis.create_custom_msa_data( bio_test_data, 13556, 'test_msa_file.fna' )
+
+    main_analysis.vis_heatmap( aligned_seqs ) # after MSA
+    main_analysis.vis_heatmap( ls_retrived_data ) # before MSA
 
     
     # indel_df = pd.DataFrame.from_dict( id_indels, orient='index', columns=['Gap count'] )

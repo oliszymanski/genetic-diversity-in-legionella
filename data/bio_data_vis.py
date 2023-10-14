@@ -11,6 +11,7 @@ from Bio import SeqIO, AlignIO, pairwise2, Phylo
 from Bio.pairwise2 import format_alignment
 from Bio.Align import MultipleSeqAlignment
 from Bio.Align.Applications import ClustalwCommandline
+from Bio.Seq import Seq
 
 # for debugging and testing
 _DBG0_ = True
@@ -203,6 +204,23 @@ def fasta_msa( in_dict : dict, n_nucleotides : int  ):
 
 
 
+def create_custom_msa_data( data : dict, n_nucleotides : int, out_file_name : str, file_type='fasta' ):
+
+    aligned_seqs = []
+
+    for nucleo, pos in data.items():
+        sequence = [ '-' if i not in pos else nucleo for i in range( 1, n_nucleotides + 1 ) ]
+        sequence = ''.join( sequence )
+        seq_record = SeqIO.SeqRecord( Seq(sequence), id=nucleo )
+        aligned_seqs.append( seq_record )
+
+    
+    SeqIO.write( aligned_seqs, out_file_name, file_type )
+    
+    return aligned_seqs
+
+
+
 class Analysis():
     def __init__( self, aligned_sequences_file : str, file_type ):
         """
@@ -265,6 +283,52 @@ class Analysis():
     
 
 
+    def id_snps( self, file_path : str, ls_reference_id : list  ):
+        """
+        """
+
+        snps = {}
+        genome_sequences = SeqIO.to_dict( SeqIO.parse(file_path, "fasta") )
+
+        for genome_id, genome_seq in genome_sequences.items():
+            if ( genome_id in ls_reference_id ):
+                continue
+
+            for i, ( ref_nucleotide, genome_nucleotide ) in enumerate( zip(  genome_sequences[genome_id], genome_seq  ) ):
+                if ( ref_nucleotide != genome_nucleotide ):
+                    pos = i + 1
+                    snps.setdefault( pos, {} ).update( {genome_id: genome_nucleotide} )
+        
+        
+        print( snps )
+
+        return None
+    
+
+
+    def vis_heatmap( self, seqs : list ):
+        """
+        """
+
+        # Convert the sequences to a binary format for plotting (A=0, T=1, C=2, G=3, -=4)
+        binary_sequences = []
+        for seq in seqs:
+            binary_seq = [ 0 if nt == 'A' else 1 if nt == 'T' else 2 if nt == 'C' else 3 if nt == 'G' else 4 for nt in seq ]
+            binary_sequences.append( binary_seq )
+
+        # Create a heatmap using Matplotlib
+        plt.imshow( binary_sequences, cmap='viridis', aspect='auto' )
+        plt.colorbar( label="Nucleotides" )
+        plt.xlabel( "Position" )
+        plt.ylabel( "Sequence" )
+        # plt.legend()
+        plt.title( "Nucleotide Heatmap" )
+
+        plt.show()
+        return None
+    
+
+
 class Testing():
     def __init__(self):
         self.test_comment_status = 'Test status: '
@@ -274,14 +338,17 @@ class Testing():
         return
     
 
+
     def test_alignments( self, alignment_src : dict, alignments_dict : dict ):        # source_dict : dict
+
+        if ( _DBG0_ ): print( f'alignment_src: {alignment_src}' )
 
         for set_vals in alignments_dict.values():
             
-            if ( _DBG0_ ): print( f'set: { set_vals }' )
+            # if ( _DBG0_ ): print( f'set: { set_vals }' )
 
             for i in set_vals:
-                test_aligned_seq = [ alignment_src[ k ][ str(i) ] for k in alignment_src.items() ]
+                test_aligned_seq = [ alignment_src[ str(v) ][ i ] for k, v in alignment_src.items() ]
 
         print( f' test_aligned_seq: {test_aligned_seq} ' )
 

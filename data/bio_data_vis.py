@@ -6,9 +6,6 @@ import os
 from collections import defaultdict
 
 import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
-
-import numpy as np
 
 from Bio import SeqIO, AlignIO, pairwise2, Phylo
 from Bio.pairwise2 import format_alignment
@@ -356,7 +353,7 @@ class Analysis():
         plt.title( "Sequence alignments (after MSA)" )
 
         plt.show()
-        
+
         return binary_sequences
     
 
@@ -376,8 +373,6 @@ class Testing():
         if ( _DBG0_ ): print( f'alignment_src: {alignment_src}' )
 
         for set_vals in alignments_dict.values():
-            
-            # if ( _DBG0_ ): print( f'set: { set_vals }' )
 
             for i in set_vals:
                 test_aligned_seq = [ alignment_src[ str(v) ][ i ] for k, v in alignment_src.items() ]

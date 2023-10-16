@@ -22,13 +22,13 @@ if ( __name__ == '__main__' ):
         'NZ_LT906442.1'         # Legionella waltersii
     ]
 
-    retrived_nucleotides = bio_data_vis.retrive_first_nucleotides( file_path=r'./retrived_seqs.fna', n_nucleotides=60000 )
+    retrived_nucleotides = bio_data_vis.retrive_first_nucleotides( file_path=r'./retrived_seqs.fna', n_nucleotides=13556 )
     
     ls_retrived_data = []
 
     if ( bio_data_vis._DBG0_ ):
         for k,v in retrived_nucleotides.items():
-            ls_retrived_data.append( v )
+            retrived_nucleotides[k] = str(v)
     
     # bio_data_vis.write_fasta_file( retrived_nucleotides, r'to_align.fna' )
 
@@ -48,8 +48,10 @@ if ( __name__ == '__main__' ):
 
     aligned_seqs = bio_data_vis.create_custom_msa_data( bio_test_data, 13556, 'test_msa_file.fna' )
 
-    main_analysis.vis_heatmap( aligned_seqs ) # after MSA
-    main_analysis.vis_heatmap( ls_retrived_data ) # before MSA
+    main_analysis.vis_heatmap_msa( aligned_seqs ) # after MSA
+    main_analysis.vis_heatmap_test( retrived_nucleotides )  # before MSA
+
+    # print( f'retrived_nucleotides: {retrived_nucleotides}' )
 
     
     # indel_df = pd.DataFrame.from_dict( id_indels, orient='index', columns=['Gap count'] )

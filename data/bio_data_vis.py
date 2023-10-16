@@ -6,6 +6,9 @@ import os
 from collections import defaultdict
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+
+import numpy as np
 
 from Bio import SeqIO, AlignIO, pairwise2, Phylo
 from Bio.pairwise2 import format_alignment
@@ -304,28 +307,57 @@ class Analysis():
 
         return None
     
-
-
-    def vis_heatmap( self, seqs : list ):
+    def vis_heatmap_test( self, data : dict ):
         """
+        :param data:    dictionary with sequences (Seq object in values);
+
+        Note: all sequences should be the same length;
         """
 
-        # Convert the sequences to a binary format for plotting (A=0, T=1, C=2, G=3, -=4)
+
+        binary_sequences = []
+        for seq in data.values():
+            binary_seq = [ 0 if nt == 'A' else 1 if nt == 'T' else 2 if nt == 'C' else 3 if nt == 'G' else 4 for nt in seq ]
+            binary_sequences.append( binary_seq )
+
+
+        # print( f'binary_sequences:\n{binary_sequences}' )
+
+        plt.imshow( binary_sequences, cmap='viridis', aspect='auto' )
+        plt.colorbar( label="Nucleotides\n(A: 0, T: 1, C: 2, G: 3)" )
+        plt.xlabel( "Position" )
+        plt.ylabel( "Sequence" )
+        plt.title( "Genetic sequences of 6 legionella strains before MSA" )
+
+        plt.show()
+
+
+        return binary_sequences
+
+
+
+    def vis_heatmap_msa( self, seqs : list ):
+        """
+        :param seqs:    list of sequences;
+
+        Note: all sequences should be the same length;
+        """
+
         binary_sequences = []
         for seq in seqs:
-            binary_seq = [ 0 if nt == 'A' else 1 if nt == 'T' else 2 if nt == 'C' else 3 if nt == 'G' else 4 for nt in seq ]
+            binary_seq = [ 4 if nt == 'A' else 3 if nt == 'T' else 2 if nt == 'C' else 1 if nt == 'G' else 0 for nt in seq ]
             binary_sequences.append( binary_seq )
 
         # Create a heatmap using Matplotlib
         plt.imshow( binary_sequences, cmap='viridis', aspect='auto' )
-        plt.colorbar( label="Nucleotides" )
+        plt.colorbar( label="Nucleotides:\n(A: 4, T: 3, C: 2, G:1, N:0)" )
         plt.xlabel( "Position" )
         plt.ylabel( "Sequence" )
-        # plt.legend()
-        plt.title( "Nucleotide Heatmap" )
+        plt.title( "Sequence alignments (after MSA)" )
 
         plt.show()
-        return None
+        
+        return binary_sequences
     
 
 

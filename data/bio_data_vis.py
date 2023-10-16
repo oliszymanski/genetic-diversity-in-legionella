@@ -183,7 +183,6 @@ def fasta_msa( in_dict : dict, n_nucleotides : int  ):
     :param n_nucleotides: first n nucleotides for MSA;
     """
 
-    positions_set = set()
     aligned_indexes = defaultdict( set )
 
     for i in range( n_nucleotides ):
@@ -268,18 +267,37 @@ class Analysis():
     
 
 
-    def calc_nucleotide_diversity( self ) -> int:
+    def calc_nucleotide_diversity( self, data : dict, num_nt : int ) -> int:
+        """
+        """
 
-        seq_length = len( self.alignments[0].seq )
-        nucleotide_freq = [0] * seq_length
+        ls_nucleo_diversity = []
+        num_seq = len( data )
+        pi = 0
 
-        for record in self.alignments:
-            for i, nucleotide in enumerate( record.seq ):
-                if ( nucleotide != '-' ): nucleotide_freq[i] += 1
+        for i in range( num_nt ):
+            nucleotide_counts = {'A': 0, 'T': 0, 'C': 0, 'G': 0, 'N': 0, '-': 0, 'other': 0}
 
-        pi = 1 - sum( ( freq / len( self.alignments ) ) ** 2 for freq in nucleotide_freq )
+            for key in data:
+                nucleotide = data[ key ][ i ]
 
-        return pi
+                if ( nucleotide in nucleotide_counts ):
+                    nucleotide_counts[ nucleotide ] += 1
+            
+            total_nucleotides = len(data)
+
+            diversity = 1.0
+
+            for nt, count in nucleotide_counts.items():
+                freq = count / total_nucleotides
+                diversity = diversity - freq**2
+
+            ls_nucleo_diversity.append( diversity )
+
+        # if (_DBG0_): print( f'nucleotide diversities:\n{ ls_nucleo_diversity }' )
+
+
+        return ls_nucleo_diversity
     
 
 
@@ -355,6 +373,24 @@ class Analysis():
         plt.show()
 
         return binary_sequences
+    
+
+
+    def vis_genetic_diversity( self, diversities : list ):
+        """
+        """
+
+        positions = range( 0, len( diversities ) )
+
+        plt.bar( positions, diversities )
+        plt.xlabel('Position')
+        plt.ylabel('Nucleotide Diversity')
+        plt.title('Nucleotide Diversity Plot')
+
+        plt.show()
+
+        return None
+
     
 
 

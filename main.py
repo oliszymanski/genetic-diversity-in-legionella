@@ -30,6 +30,8 @@ if ( __name__ == '__main__' ):
         for k,v in retrived_nucleotides.items():
             retrived_nucleotides[k] = str(v)
 
+        print( f"length of sequences: {len( retrived_nucleotides['NZ_AP022841.1'] )}" )
+
     # objects
     main_analysis = bio_data_vis.Analysis( r'./aligned_sequences.fna', 'clustal' )
     main_tests = bio_data_vis.Testing()
@@ -45,5 +47,8 @@ if ( __name__ == '__main__' ):
     
     # main_analysis.generate_phylo_tree( 'to_align.dnd', 'newick' )
 
-    # nucleotide_diversity = main_analysis.calc_nucleotide_diversity()
+    # print( f'retrived data:\n{ retrived_nucleotides[1] }' )
+    ls_nucleotide_diversity = main_analysis.calc_nucleotide_diversity( retrived_nucleotides, 13556 )
+    main_analysis.vis_genetic_diversity( ls_nucleotide_diversity )
+    
     # print( f'nucleotide_diversity: { nucleotide_diversity }' )

@@ -13,7 +13,7 @@ This project involved a few steps:
 
 
 ## Data collection and analysis
-I've collected genetic sequences of legionella sequences from NCBI (National Center for Biotechnology Information). It contains information of different bacteria, their DNA sequences (view legionella information <a href='https://www.ncbi.nlm.nih.gov/search/all/?term=legionella'>here</a>).
+I've collected genetic sequences of legionella sequences from NCBI (National Center for Biotechnology Information). It contains information of different bacteria, their DNA sequences[0].
 
 I've gathered sequences of 6 legionella strains:
 - Legionella antarctica
@@ -146,7 +146,7 @@ main_analysis.generate_phylo_tree( 'to_align.dnd', 'newick' )
 ```
 
 ## Calculating genetic diversity
-Calculating the genetic diversity allows us to understand how genetically different or similar these bacteria are. 
+Calculating the genetic diversity[3] allows us to understand how genetically different or similar these bacteria are. 
 
 By quantifying genetic variation, you can uncover their evolutionary history and relationships.
 
@@ -230,5 +230,7 @@ There will be some more tools added and taken away, to make this project even be
 
 
 ## Notes and sources
-[0] [Multiple sequence alignment - Wikipedia](https://en.wikipedia.org/wiki/Multiple_sequence_alignment)<br>
-[1] [Single-Nucleotide Polymorphisms - Wikipedia](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism)<br>
+[0] [legionella strains and more data - NCBI ]('https://www.ncbi.nlm.nih.gov/search/all/?term=legionella')
+[1] [Multiple sequence alignment - Wikipedia](https://en.wikipedia.org/wiki/Multiple_sequence_alignment)<br>
+[2] [Single-Nucleotide Polymorphisms - Wikipedia](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism)<br>
+[3] [Genetic diversity - Wikipedia](https://en.wikipedia.org/wiki/Genetic_diversity)

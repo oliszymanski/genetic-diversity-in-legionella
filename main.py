@@ -41,11 +41,11 @@ if ( __name__ == '__main__' ):
     aligned_seqs = bio_data_vis.create_custom_msa_data( bio_test_data, 13556, 'test_msa_file.fna' )
 
     main_analysis.vis_heatmap_msa( aligned_seqs )           # after MSA
-    main_analysis.vis_heatmap_test( retrived_nucleotides )  # before MSA
+    main_analysis.vis_heatmap_snps( retrived_nucleotides )  # before MSA
     
     # indel_df = pd.DataFrame.from_dict( id_indels, orient='index', columns=['Gap count'] )
     
-    # main_analysis.generate_phylo_tree( 'to_align.dnd', 'newick' )
+    main_analysis.generate_phylo_tree( 'to_align.dnd', 'newick' )
 
     # print( f'retrived data:\n{ retrived_nucleotides[1] }' )
     ls_nucleotide_diversity = main_analysis.calc_nucleotide_diversity( retrived_nucleotides, 13556 )

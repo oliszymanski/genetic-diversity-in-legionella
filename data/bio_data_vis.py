@@ -322,7 +322,7 @@ class Analysis():
 
         return None
     
-    def vis_heatmap_test( self, data : dict ):
+    def vis_heatmap_snps( self, data : dict ):
         """
         :param data:    dictionary with sequences (Seq object in values);
 
